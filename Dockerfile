@@ -21,7 +21,9 @@ RUN useradd --create-home app \
     unzip \
   && rm -fr /var/lib/apt/lists/* \
   && docker-php-ext-install \
-    gd
+    gd \
+    opcache \
+    pdo_mysql
 
 COPY --chown=app:app composer.* ./
 
