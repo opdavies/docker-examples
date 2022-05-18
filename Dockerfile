@@ -18,6 +18,7 @@ RUN useradd --create-home app \
   && apt-get install -yqq \
     git \
     libpng-dev \
+    mariadb-client \
     unzip \
   && rm -fr /var/lib/apt/lists/* \
   && docker-php-ext-install \
