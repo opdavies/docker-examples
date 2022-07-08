@@ -21,10 +21,15 @@ RUN useradd --create-home app \
     mariadb-client \
     unzip \
   && rm -fr /var/lib/apt/lists/* \
+  && pecl install xdebug \
   && docker-php-ext-install \
     gd \
     opcache \
-    pdo_mysql
+    pdo_mysql \
+  && docker-php-ext-enable \
+    xdebug
+
+COPY tools/docker/images/php/root /
 
 COPY --chown=app:app composer.* ./
 
