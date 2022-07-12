@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+function artisan {
+  cmd php artisan "${@}"
+}
+
+function cmd {
+  _dc php-fpm "${@}"
+}
+
+function composer {
+  cmd composer "${@}"
+}
+
+function help {
+  printf "%s <task> [args]\n\nTasks:\n" "${0}"
+
+  compgen -A function | grep -v "^_" | cat -n
+
+  printf "\nExtended help:\n  Each task has comments for general usage\n"
+}
+
+function test {
+  cmd phpunit "${@}"
+}
+
+function _dc {
+  docker-compose run --rm "${@}"
+}
+
+eval "${@:-help}"
