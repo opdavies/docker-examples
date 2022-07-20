@@ -2,8 +2,10 @@ services:
   app:
     build:
       context: "."
+      args:
+        - "NODE_ENV=${NODE_ENV:-production}"
     volumes:
       - ".:/app"
     ports:
-      - "3000:3000"
+      - "5173:5173"
     command: "vite dev --host"
