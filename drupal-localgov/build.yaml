@@ -1,0 +1,53 @@
+name: docker-example-drupal-localgov
+language: php
+type: drupal-project
+
+web:
+  type: nginx
+
+database:
+  type: mariadb
+  version: 10
+
+php:
+  version: 8.1-fpm-bullseye
+  phpcs:
+    standard: Drupal,DrupalPractice
+  phpstan:
+    level: max
+
+docker-compose:
+  services:
+    database: ~
+    php:
+      build:
+        target: build
+
+dockerfile:
+  stages:
+    build:
+      extends: base
+      packages:
+        - git
+        - libpng-dev
+        - libzip-dev
+        - mariadb-client
+        - unzip
+      extensions:
+        install:
+          - gd
+          - pdo_mysql
+          - zip
+      commands:
+        - composer validate --strict
+        - composer install
+      extra_directories:
+        - assets
+
+    test:
+      extends: base
+      commands:
+        - parallel-lint src --no-progress
+        - phpcs -vv
+        - phpstan
+        - phpunit --testdox
